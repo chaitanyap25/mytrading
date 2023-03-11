@@ -1,0 +1,30 @@
+jenkins:
+
+admin
+cb44e3a1d88346259b1f5fbb57cd3d39
+
+python
+
+git@1990
+
+git: 
+Psw: git@1990
+
+https://github.com/chaitanyap25/trading.git
+
+
+c:\users\chait\appdata\local\programs\python\python38-32\python.exe
+
+=======================================================================
+
+git init
+
+git remote add origin https
+
+git status
+
+git add -A
+
+git commit -m "comment"
+
+git push -u origin master
