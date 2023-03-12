@@ -32,6 +32,9 @@ class Login_OpstraPage:
         call_buy = 290
         put_buy = 200
 
+        c_buy = 288.80
+        p_buy = 203.30
+
         fut = "//*[@id = 'app']/div/div[3]/div[2]/div[2]/div/div/div[2]/div[1]/div[1]/div/div[1]"
         nifty_fut = self.driver.find_element(By.XPATH, fut).text
         fut = nifty_fut.split(" ")
@@ -80,6 +83,9 @@ class Login_OpstraPage:
         total = profit*50
         print(total)
 
+        rahul_profit = (float(c_buy) - float(call_ltp[0:6])) + (float(p_buy) - float(put_ltp[0:6]))
+        rahul_total = rahul_profit * 50
+
         named_tuple = time.localtime()  # get struct_time
         time_string = time.strftime("%H:%M:%S", named_tuple)
 
@@ -91,13 +97,18 @@ class Login_OpstraPage:
         sheet.cell(row=new_row, column=3).value = str(put_ltp[0:6])
         sheet.cell(row=new_row, column=4).value = date.today()
         sheet.cell(row=new_row, column=5).value = time_string
-        sheet.cell(row=new_row, column=6).value = round(total,2)
+        sheet.cell(row=new_row, column=6).value = round(total, 2)
 
         wb.save('TestData/Option_trade.xlsx')
         wb.close()
 
         # ------------------------send to telegram----------------------------------------------
-        msg = "Chaitanya : Your profit is "+str(round(total,2)) + " on time " +str(time_string)+" with CE at "+str(ce[0])+" and PE at "+str(pe[0])
+        msg = "Chaitanya : Your profit is "+str(total) + " on time " +str(time_string)+" with CE at "+str(ce[0])+" and PE at "+str(pe[0])
         url1 = 'https://api.telegram.org/bot6006884871:AAFqjs2rjTKfn7LYonjdmogq6v4-LAEegTU/sendMessage?chat_id=-894738745&text="{}"'.format(msg)
 #         requests.get(url)
         self.driver.get(url1)
+
+        msg1 = "Rahul : Your profit is " + str(rahul_total) + " on time " + str(time_string) + " with CE at " + str(ce[0]) + " and PE at " + str(pe[0])
+        url2 = 'https://api.telegram.org/bot6006884871:AAFqjs2rjTKfn7LYonjdmogq6v4-LAEegTU/sendMessage?chat_id=-894738745&text="{}"'.format(msg1)
+        #         requests.get(url)
+        self.driver.get(url2)
