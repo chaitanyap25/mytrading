@@ -103,12 +103,12 @@ class Login_OpstraPage:
         wb.close()
 
         # ------------------------send to telegram----------------------------------------------
-        msg = "Chaitanya : Your profit is "+str(total) + " on time " +str(time_string)+" with CE at "+str(ce[0])+" and PE at "+str(pe[0])
+        msg = "Chaitanya : Your profit is "+str(round(total, 2)) + " on time " +str(time_string)+" with CE at "+str(ce[0])+" and PE at "+str(pe[0])
         url1 = 'https://api.telegram.org/bot6006884871:AAFqjs2rjTKfn7LYonjdmogq6v4-LAEegTU/sendMessage?chat_id=-894738745&text="{}"'.format(msg)
 #         requests.get(url)
         self.driver.get(url1)
 
-        msg1 = "Rahul : Your profit is " + str(rahul_total) + " on time " + str(time_string) + " with CE at " + str(ce[0]) + " and PE at " + str(pe[0])
+        msg1 = "Rahul : Your profit is " + str(round(rahul_total, 2)) + " on time " + str(time_string) + " with CE at " + str(ce[0]) + " and PE at " + str(pe[0])
         url2 = 'https://api.telegram.org/bot6006884871:AAFqjs2rjTKfn7LYonjdmogq6v4-LAEegTU/sendMessage?chat_id=-894738745&text="{}"'.format(msg1)
         #         requests.get(url)
         self.driver.get(url2)
