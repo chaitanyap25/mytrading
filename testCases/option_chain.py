@@ -13,8 +13,9 @@ put_buy = 200
 c_buy = 288.80
 p_buy = 203.30
 
+ce = 0.0
+pe = 0.0
 # -----------------------------------------------------------------------------
-
 
 url = "https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY"
 headers = {"accept-encoding": "gzip, deflate, br",
@@ -30,18 +31,21 @@ exp_list = data['records']['expiryDates']
 
 strick_price = data['records']['strikePrices']
 
-strick = strick_price[47]
+d = data['records']['data']
 
-exp_date = exp_list[2]
+# print(d[3]['strikePrice'])
 
-for i in data['records']['data']:
-    if i['expiryDate'] == exp_date and i['strikePrice'] == strick:
-        ce = i['CE']['lastPrice']
-        pe = i['PE']['lastPrice']
+for j in range(len(d)):
+    if d[j]['strikePrice'] == 17400 and d[j]['expiryDate'] == "29-Mar-2023":
+        print(d[j]['expiryDate'])
+        #        print(d[j]['CE']['lastPrice'])
+        #        print(d[j]['PE']['lastPrice'])
+
+        ce = d[j]['CE']['lastPrice']
+        pe = d[j]['PE']['lastPrice']
 
 print(ce)
 print(pe)
-
 # ------------------------------------------------------------------------
 
 file_path = 'TestData/Option_trade.xlsx'
@@ -49,14 +53,18 @@ file_path = 'TestData/Option_trade.xlsx'
 wb = load_workbook(file_path)
 sheet = wb['Sheet']
 
-print(sheet.max_row)
+# print(sheet.max_row)
 new_row = sheet.max_row + 1
 # ce = call_ltp.split(".")
 # pe = put_ltp.split(".")
 # print(call_ltp[0:6])
 profit = (call_buy - float(ce)) + (put_buy - float(pe))
 total = profit * 50
-print(total)
+# print("Total : "+str(total))
+# print(call_buy)
+# print(float(ce))
+# print(put_buy)
+# print(float(pe))
 
 rahul_profit = (float(c_buy) - float(ce)) + (float(p_buy) - float(pe))
 rahul_total = rahul_profit * 50
@@ -83,11 +91,16 @@ msg = "Chaitanya : Your profit is " + str(round(total, 2)) + " on time " + str(t
 url1 = 'https://api.telegram.org/bot6006884871:AAFqjs2rjTKfn7LYonjdmogq6v4-LAEegTU/sendMessage?chat_id=-894738745&text="{}"'.format(
     msg)
 requests.get(url1)
-webUrl = urllib.request.urlopen(url1)
+# webUrl = urllib.request.urlopen(url1)
 
 msg1 = "Rahul : Your profit is " + str(round(rahul_total, 2)) + " on time " + str(time_string) + " with CE at " + str(
     ce) + " and PE at " + str(pe)
 url2 = 'https://api.telegram.org/bot6006884871:AAFqjs2rjTKfn7LYonjdmogq6v4-LAEegTU/sendMessage?chat_id=-894738745&text="{}"'.format(
     msg1)
-#         requests.get(url)
+requests.get(url2)
 # driver.get(url2)
+
+# print(msg)
+# print(msg1)
+
+# pytest -s -v --html=Reports\report.html testCases/option_chain.py
